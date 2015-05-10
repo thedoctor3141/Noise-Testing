@@ -13,19 +13,15 @@ public class Main {
 		//ImageWriter.greyWriteImage(noiseB);
 		//ColorMap map = new ColorMap(Color.yellow, new Color(117, 63, 9));
 		OpenSimplexNoise noise = new OpenSimplexNoise();
-		double size = 1000, feature = 64;
-		double[][] nn = new double[(int) size][(int) size];
-		for(int x = 0; x < size; x++){
-			for(int y = 0; y < size; y++){
-				double n = noise.eval(x / feature, y / feature, 0.5);
-				double d = Math.abs(n - 0.5) / 4;
-				double o = (random.nextDouble() * d * 2) - d;
-				n += (n + o > 1) ? 0 : (n - o < 0) ? 0 : o;
-				n = (n == 1) ? n - o : (n == 0) ? n + o : n;
-				nn[x][y] = (n > 1) ? 1 - o : (n < 0) ? 0 + o : n;
-			}
-		}
-		ImageWriter.greyWriteImage(nn);
+		int size = 128, feature = 64;
+		double[][] n1 = Noise.noise(size, 8);
+		double[][] n2 = Noise.noise(size, 4);
+		double[][] n3 = Noise.noise(size, 16);
+		double[][] n4 = Noise.noise(size, 32);
+		n1 = Noise.smooth(n1, n2, size);
+		n2 = Noise.smooth(n3, n4, size);
+		n3 = Noise.smooth(n1, n2, size);
+		ImageWriter.greyWriteImage(n3);
 		System.out.println("finished!");
 	}
 

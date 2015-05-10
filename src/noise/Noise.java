@@ -5,6 +5,19 @@ import java.util.Random;
 public class Noise {
 
 	private static Random random = new Random();
+	private static OpenSimplexNoise noise = new OpenSimplexNoise();
+	public static double turb(double x, double y, double size)
+	{
+	    double value = 0.0, initialSize = size;
+	    
+	    while(size >= 1)
+	    {
+	        value += noise.eval(x / size, y / size) * size;
+	        size /= 2.0;
+	    }
+	    
+	    return(128.0 * value / initialSize);
+	}
 	public static double[][] noise(int size, int steps) {
 		double[][] noise = new double[size][size];
 		double[][][] pointSet = pointSet(steps, size);
@@ -14,18 +27,8 @@ public class Noise {
 			for(int y = 0; y < size; y++){
 				sx = x / stepSize;
 				sy = y / stepSize;
-				//sx2
-					double cm = (y - pointSet[sx][sy][1]) / (x - pointSet[sx][sy][0]);
-					if(y > pointSet[sx][sy][1]){
-						double tm = (pointSet[sx][sy+1][1] - pointSet[sx][sy][1]) / (pointSet[sx][sy+1][0] - pointSet[sx][sy][0]);
-						
-					}else{
-						double bm = (pointSet[sx][sy-1][1] - pointSet[sx][sy][1]) / (pointSet[sx][sy-1][0] - pointSet[sx][sy][0]);
-						
-					}
-					
-				//sy2
-				
+				sx2 = sx + 1;
+				sy2 = sy + 1;
 				for(int i = 0; i < 4; i++){
 					for(int d = 0; d < 3; d++){
 						switch(i){
@@ -72,13 +75,17 @@ public class Noise {
 		double total = 0;
 		double avgWeight = 0;
 		for(int i = 0; i < 4; i++){
-			//sx = (nx / stepSize) * stepSize;
-			//sy = (ny / stepSize) * stepSize;
-			//stepDist = Math.sqrt(sq(sx - nx) + sq(sy - ny));
-			dist = (Math.sqrt(sq(points[i][1] - ny) + sq(points[i][0] - nx)) + stepDist) / 2 * points[i][2] / stepSize;
+			dist = (Math.sqrt(sq(points[i][1] - ny) + sq(points[i][0] - nx)) + stepDist) * points[i][2] / stepSize;
 			total += dist;
 		}
-		return total / 4;
+		avgWeight = random.nextDouble() * total;
+		for(int i = 0; i < 4; i++){
+			if(avgWeight < dists[i]){
+				avgWeight = points[i][2] - 0.9;
+				break;
+			}
+		}
+		return avgWeight;
 	}
 	private static double sq(double d){
 		return d * d;
