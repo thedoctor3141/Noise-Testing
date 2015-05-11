@@ -6,17 +6,15 @@ public class Noise {
 
 	private static Random random = new Random();
 	private static OpenSimplexNoise noise = new OpenSimplexNoise();
-	public static double turb(double x, double y, double size)
+	public static double[][] turb(int size, double feature)
 	{
-	    double value = 0.0, initialSize = size;
-	    
-	    while(size >= 1)
-	    {
-	        value += noise.eval(x / size, y / size) * size;
-	        size /= 2.0;
-	    }
-	    
-	    return(128.0 * value / initialSize);
+		double[][] nn = new double[size][size];
+		for(int x = 0; x < size; x++){
+			for(int y = 0; y < size; y++){
+				nn[x][y] = noise.eval(x / feature, y / feature);
+			}
+		}
+		return nn;
 	}
 	public static double[][] noise(int size, int steps) {
 		double[][] noise = new double[size][size];
