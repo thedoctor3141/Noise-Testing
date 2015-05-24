@@ -1,6 +1,5 @@
 package noise;
 
-import java.awt.Color;
 import java.util.Random;
 
 
@@ -13,8 +12,8 @@ public class Main {
 		//ImageWriter.greyWriteImage(noiseB);
 		//ColorMap map = new ColorMap(Color.yellow, new Color(117, 63, 9));
 		OpenSimplexNoise noise = new OpenSimplexNoise();
-		int size = 128, feature = 128;
-		double[][] n1 = Noise.turb(size, 24);
+		int size = 100, feature = 20;
+		double[][] n1 = Noise.turb(size, feature);
 		ImageWriter.greyWriteImage(n1);
 		System.out.println("finished!");
 	}
