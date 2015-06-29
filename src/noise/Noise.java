@@ -13,7 +13,7 @@ public class Noise {
 		for(int x = 0; x < size; x++){
 			for(int y = 0; y < size; y++){
 				
-				amplitude = 1;
+				amplitude = 10000;
 				noise = 0;
 				normalizeFactor = 0;
 				frequence = startFrequence;
@@ -24,7 +24,7 @@ public class Noise {
 					frequence *= 2;
 				}
 				double n = noise / normalizeFactor;
-				nn[x][y] = -n + 1;
+				nn[x][y] = n;
 			}
 		}
 		return nn;

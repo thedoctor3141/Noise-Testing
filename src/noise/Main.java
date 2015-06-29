@@ -11,8 +11,7 @@ public class Main {
 		//double[][] noiseC = Noise.smooth(noiseA, noiseB, 200);
 		//ImageWriter.greyWriteImage(noiseB);
 		//ColorMap map = new ColorMap(Color.yellow, new Color(117, 63, 9));
-		OpenSimplexNoise noise = new OpenSimplexNoise();
-		double[][] n1 = Noise.turb(1000, 5, 0.001, 2);
+		double[][] n1 = Noise.turb(100, 8, 0.001, 1.8);
 		ImageWriter.greyWriteImage(n1);
 		System.out.println("finished!");
 	}
